@@ -2,6 +2,8 @@
 
 A rust port of the JS library [suncalc](https://github.com/mourner/suncalc/).
 
+[![Build Status](https://travis-ci.org/flosse/rust-sun.svg?branch=master)](https://travis-ci.org/flosse/rust-sun)
+
 ## Unstall
 
 Add the following to your `Cargo.toml`
