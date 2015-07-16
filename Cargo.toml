@@ -2,6 +2,6 @@
 name = "sun"
 version = "0.1.0"
 authors = ["Markus Kohlhase <mail@markus-kohlhase.de>"]
-
-[dependencies]
-time = "*"
+license = "MIT"
+homepage = "https://github.com/flosse/rust-sun"
+repository = "https://github.com/flosse/rust-sun"

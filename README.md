@@ -2,14 +2,14 @@
 
 A rust port of the JS library [suncalc](https://github.com/mourner/suncalc/).
 
-## install
+## Unstall
 
 Add the following to your `Cargo.toml`
 
     [dependencies]
     sun = "0.1.0"
 
-## usage
+## Usage
 
 ```rust
 extern crate sun;
