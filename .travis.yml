@@ -1,0 +1,11 @@
+language: rust
+matrix:
+  include:
+  - rust: nightly
+  - rust: beta
+  - rust: stable
+script:
+- cargo build
+- cargo test
+- cargo bench
+- cargo doc

@@ -1,0 +1,7 @@
+[package]
+name = "sun"
+version = "0.1.0"
+authors = ["Markus Kohlhase <mail@markus-kohlhase.de>"]
+
+[dependencies]
+time = "*"
