@@ -97,7 +97,7 @@ fn ecliptic_longitude(m:f64) -> f64 {
 }
 
 /// calculates the sun position for a given date and latitude/longitude
-pub fn get_pos(unixtime: i64, lat: f64, lon: f64) -> Position {
+pub fn pos(unixtime: i64, lat: f64, lon: f64) -> Position {
 
   let lw  = -lon * TO_RAD;
   let phi = lat * TO_RAD;
@@ -115,10 +115,10 @@ pub fn get_pos(unixtime: i64, lat: f64, lon: f64) -> Position {
 }
 
 #[test]
-fn test_get_pos(){
+fn test_pos(){
   // 2013-03-05 UTC
   let date = 1362441600000;
-  let pos = get_pos(date, 50.5, 30.5);
+  let pos = pos(date, 50.5, 30.5);
   assert_eq!(0.6412750628729547, pos.azimuth);
   assert_eq!(-0.7000406838781611, pos.altitude);
 }

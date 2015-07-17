@@ -20,7 +20,7 @@ pub fn main() {
   let unixtime = 1362441600000;
   let lat = 48.0;
   let lon = 9.0;
-  let pos = sun::get_pos(unixtime,lat,lon);
+  let pos = sun::pos(unixtime,lat,lon);
   println!(pos);
 }
 ```
