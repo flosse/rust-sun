@@ -96,20 +96,20 @@ fn altitude(h:f64, phi:f64, dec:f64) -> f64 {
 }
 
 fn sidereal_time(d:f64, lw:f64) -> f64 {
-  (280.16 + 360.9856235 * d) * TO_RAD - lw
+  (280.16 + 360.9856235 * d).to_radians() - lw
 }
 
 // general sun calculations
 
 fn solar_mean_anomaly(d:f64) -> f64 {
-  (357.5291 + 0.98560028 * d) * TO_RAD
+  (357.5291 + 0.98560028 * d).to_radians()
 }
 
 fn equation_of_center(m:f64) -> f64 {
   (1.9148 * (1.0 * m).sin() +
    0.02   * (2.0 * m).sin() +
    0.0003 * (3.0 * m).sin()
-  ) * TO_RAD
+  ).to_radians()
 }
 
 fn ecliptic_longitude(m:f64) -> f64 {
@@ -125,8 +125,8 @@ fn ecliptic_longitude(m:f64) -> f64 {
 /// calculates the sun position for a given date and latitude/longitude
 pub fn pos(unixtime: i64, lat: f64, lon: f64) -> Position {
 
-  let lw  = -lon * TO_RAD;
-  let phi = lat * TO_RAD;
+  let lw  = -lon.to_radians();
+  let phi = lat.to_radians();
   let d   = to_days(unixtime);
   let m   = solar_mean_anomaly(d);
   let l   = ecliptic_longitude(m);
