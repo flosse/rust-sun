@@ -1,7 +1,24 @@
 // Copyright (c) 2014 Markus Kohlhase <mail@markus-kohlhase.de>
 
-// This is a port of the JavaScript library suncalc:
-// https://github.com/mourner/suncalc
+//! The `sun` crate is a library for calculating the position of the sun.
+//! It is a port of the JavaScript library
+//! [suncalc](https://github.com/mourner/suncalc).
+//!
+//! # Example
+//!
+//! ```
+//! extern crate sun;
+//!
+//! pub fn main() {
+//!   let unixtime = 1362441600000;
+//!   let lat = 48.0;
+//!   let lon = 9.0;
+//!   let pos = sun::pos(unixtime,lat,lon);
+//!   let az  = pos.azimuth.to_degrees();
+//!   let alt = pos.altitude.to_degrees();
+//!   println!("The position of the sun is {}/{}", az, alt);
+//! }
+//! ```
 
 use std::f64::consts::PI;
 
@@ -14,6 +31,9 @@ const TO_RAD                : f64 = PI / 180.0;
 const OBLIQUITY_OF_EARTH    : f64 = 23.4397  * TO_RAD;
 const PERIHELION_OF_EARTH   : f64 = 102.9372 * TO_RAD;
 
+/// Holds the [azimuth](https://en.wikipedia.org/wiki/Azimuth)
+/// and [altitude](https://en.wikipedia.org/wiki/Horizontal_coordinate_system)
+/// angles of the sun position.
 #[derive(Debug)]
 pub struct Position {
   pub azimuth   : f64,
@@ -96,6 +116,12 @@ fn ecliptic_longitude(m:f64) -> f64 {
   m + equation_of_center(m) + PERIHELION_OF_EARTH + PI
 }
 
+/// Calculates the sun position for a given date and latitude/longitude.
+/// The angles are calculated as [radians](https://en.wikipedia.org/wiki/Radian).
+///
+/// * `unixtime`  - [unix time](https://en.wikipedia.org/wiki/Unix_time) in milliseconds.
+/// * `lat`       - [latitude](https://en.wikipedia.org/wiki/Latitude) in degrees.
+/// * `lon`       - [longitude](https://en.wikipedia.org/wiki/Longitude) in degrees.
 /// calculates the sun position for a given date and latitude/longitude
 pub fn pos(unixtime: i64, lat: f64, lon: f64) -> Position {
 

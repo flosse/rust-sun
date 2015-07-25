@@ -22,6 +22,8 @@ pub fn main() {
   let lat = 48.0;
   let lon = 9.0;
   let pos = sun::pos(unixtime,lat,lon);
-  println!(pos);
+  let az  = pos.azimuth.to_degrees();
+  let alt = pos.altitude.to_degrees();
+  println!("The position of the sun is {}/{}", az, alt);
 }
 ```
