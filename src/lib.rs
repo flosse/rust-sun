@@ -40,8 +40,8 @@ pub struct Position {
   pub altitude  : f64
 }
 
-fn to_julian(unixtime: i64) -> f64 {
-  unixtime as f64 /
+fn to_julian(unixtime_in_ms: i64) -> f64 {
+  unixtime_in_ms as f64 /
   (MILLISECONDS_PER_DAY as f64) - 0.5 + J1970 as f64
 }
 
@@ -51,8 +51,8 @@ fn test_to_julian(){
   assert_eq!(2457054.5, to_julian(1422748800000));
 }
 
-fn to_days(unixtime: i64) -> f64 {
-  to_julian(unixtime) - J2000 as f64
+fn to_days(unixtime_in_ms: i64) -> f64 {
+  to_julian(unixtime_in_ms) - J2000 as f64
 }
 
 #[test]
@@ -123,11 +123,11 @@ fn ecliptic_longitude(m:f64) -> f64 {
 /// * `lat`       - [latitude](https://en.wikipedia.org/wiki/Latitude) in degrees.
 /// * `lon`       - [longitude](https://en.wikipedia.org/wiki/Longitude) in degrees.
 /// calculates the sun position for a given date and latitude/longitude
-pub fn pos(unixtime: i64, lat: f64, lon: f64) -> Position {
+pub fn pos(unixtime_in_ms: i64, lat: f64, lon: f64) -> Position {
 
   let lw  = -lon.to_radians();
   let phi = lat.to_radians();
-  let d   = to_days(unixtime);
+  let d   = to_days(unixtime_in_ms);
   let m   = solar_mean_anomaly(d);
   let l   = ecliptic_longitude(m);
   let dec = declination(l, 0.0);
