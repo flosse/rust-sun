@@ -1,4 +1,4 @@
-// Copyright (c) 2014 Markus Kohlhase <mail@markus-kohlhase.de>
+// Copyright (c) 2015 Markus Kohlhase <mail@markus-kohlhase.de>
 
 //! The `sun` crate is a library for calculating the position of the sun.
 //! It is a port of the JavaScript library
