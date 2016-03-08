@@ -6,3 +6,9 @@ license = "MIT"
 homepage = "https://github.com/flosse/rust-sun"
 repository = "https://github.com/flosse/rust-sun"
 description = "calculate the position of the sun"
+
+[dependencies]
+clippy = {version = "*", optional = true}
+
+[features]
+default=[]

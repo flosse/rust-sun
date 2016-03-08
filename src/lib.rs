@@ -1,4 +1,4 @@
-// Copyright (c) 2015 Markus Kohlhase <mail@markus-kohlhase.de>
+// Copyright (c) 2015 - 2016 Markus Kohlhase <mail@markus-kohlhase.de>
 
 //! The `sun` crate is a library for calculating the position of the sun.
 //! It is a port of the JavaScript library
@@ -19,6 +19,9 @@
 //!   println!("The position of the sun is {}/{}", az, alt);
 //! }
 //! ```
+
+#![cfg_attr(feature="clippy", feature(plugin))]
+#![cfg_attr(feature="clippy", plugin(clippy))]
 
 use std::f64::consts::PI;
 
