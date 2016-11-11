@@ -4,7 +4,7 @@ A rust port of the JS library [suncalc](https://github.com/mourner/suncalc/).
 
 [![](http://meritbadge.herokuapp.com/sun)](https://crates.io/crates/sun)
 [![Build Status](https://travis-ci.org/flosse/rust-sun.svg?branch=master)](https://travis-ci.org/flosse/rust-sun)
-[![Clippy Linting Result](http://clippy.bashy.io/github/flosse/rust-sun/master/badge.svg)](http://clippy.bashy.io/github/flosse/rust-sun/master/log)
+[![Clippy Linting Result](https://clippy.bashy.io/github/flosse/rust-sun/master/badge.svg)](https://clippy.bashy.io/github/flosse/rust-sun/master/log)
 
 ## Install
 
