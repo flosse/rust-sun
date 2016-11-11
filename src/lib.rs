@@ -20,9 +20,6 @@
 //! }
 //! ```
 
-#![cfg_attr(feature="clippy", feature(plugin))]
-#![cfg_attr(feature="clippy", plugin(clippy))]
-
 use std::f64::consts::PI;
 
 // date/time constants and conversions

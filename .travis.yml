@@ -8,8 +8,6 @@ matrix:
 script:
 - cargo build
 - cargo test
-- cargo bench
-- cargo doc
 
 # load travis-cargo
 before_script:
