@@ -148,3 +148,77 @@ fn test_pos(){
   assert_eq!(0.6412750628729547, pos.azimuth);
   assert_eq!(-0.7000406838781611, pos.altitude);
 }
+
+
+// general moon calculations
+
+fn lunar_mean_anomaly(d: f64) -> f64 {
+    (134.963 + 13.064993 * d).to_radians()
+}
+
+fn lunar_ecliptic_longitude(d: f64) -> f64 {
+    (218.316 + 13.176396 * d).to_radians()
+}
+
+fn lunar_mean_distance(d: f64) -> f64 {
+    (93.272 + 13.229350 * d).to_radians()
+}
+
+fn astro_refraction(h: f64) -> f64 {
+    let hh = if h < 0.0 {
+        0.0
+    } else {
+        h
+    };
+
+    0.0002967 / (hh + 0.00312536 / (hh + 0.08901179)).tan()
+}
+
+#[derive(Debug)]
+struct Coords {
+    pub right_ascension: f64,
+    pub declination: f64,
+    pub distance: f64,
+}
+
+fn moon_coords(d: f64) -> Coords {
+    let l = lunar_ecliptic_longitude(d);
+    let m = lunar_mean_anomaly(d);
+    let f = lunar_mean_distance(d);
+
+    let lng = l + TO_RAD * 6.289 * m.sin();
+    let lat = TO_RAD * 5.128 * f.sin();
+    let distance = 385001.0 - 20905.0 * m.cos();
+
+    Coords {
+        right_ascension: right_ascension(lng, lat),
+        declination: declination(lng, lat),
+        distance: distance,
+    }
+}
+
+pub fn moon_pos(unixtime_in_ms: i64, lat: f64, lon: f64) -> Position {
+    let lw = TO_RAD * -lon;
+    let phi = TO_RAD * lat;
+    let d = to_days(unixtime_in_ms);
+
+    let c = moon_coords(d);
+
+    let h = sidereal_time(d, lw) - c.right_ascension;
+    let mut alt = altitude(h, phi, c.declination);
+    alt = alt + astro_refraction(alt);
+
+    Position {
+        azimuth: azimuth(h, phi, c.declination),
+        altitude: alt
+    }
+}
+
+#[test]
+fn test_moon_pos() {
+    let date = 1362441600000;
+    let pos = moon_pos(date, 50.5, 30.5);
+
+    assert_eq!(-0.9783999522438225, pos.azimuth - PI);
+    assert_eq!(0.014551482243892251, pos.altitude);
+}
