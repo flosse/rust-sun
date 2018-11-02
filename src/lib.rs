@@ -128,16 +128,23 @@ pub fn pos(unixtime_in_ms: i64, lat: f64, lon: f64) -> Position {
   let lw  = -lon.to_radians();
   let phi = lat.to_radians();
   let d   = to_days(unixtime_in_ms);
-  let m   = solar_mean_anomaly(d);
-  let l   = ecliptic_longitude(m);
-  let dec = declination(l, 0.0);
-  let ra  = right_ascension(l, 0.0);
-  let h   = sidereal_time(d, lw) - ra;
+  let coords = sun_coords(d);
+  let h   = sidereal_time(d, lw) - coords.right_ascension;
 
   Position {
-    azimuth  :  azimuth(h, phi, dec),
-    altitude : altitude(h, phi, dec)
+    azimuth  :  azimuth(h, phi, coords.declination),
+    altitude : altitude(h, phi, coords.declination)
   }
+}
+
+fn sun_coords (d: f64) -> Coords {
+    let m   = solar_mean_anomaly(d);
+    let l   = ecliptic_longitude(m);
+
+    Coords {
+        right_ascension: right_ascension(l, 0.0),
+        declination: declination(l, 0.0),
+    }
 }
 
 #[test]
