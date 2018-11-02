@@ -178,7 +178,6 @@ fn astro_refraction(h: f64) -> f64 {
 struct Coords {
     pub right_ascension: f64,
     pub declination: f64,
-    pub distance: f64,
 }
 
 fn moon_coords(d: f64) -> Coords {
@@ -188,12 +187,10 @@ fn moon_coords(d: f64) -> Coords {
 
     let lng = l + TO_RAD * 6.289 * m.sin();
     let lat = TO_RAD * 5.128 * f.sin();
-    let distance = 385001.0 - 20905.0 * m.cos();
 
     Coords {
         right_ascension: right_ascension(lng, lat),
         declination: declination(lng, lat),
-        distance: distance,
     }
 }
 
