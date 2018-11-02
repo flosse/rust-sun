@@ -40,6 +40,12 @@ pub struct Position {
   pub altitude  : f64
 }
 
+#[derive(Debug)]
+struct Coords {
+    pub right_ascension: f64,
+    pub declination: f64,
+}
+
 fn to_julian(unixtime_in_ms: i64) -> f64 {
   unixtime_in_ms as f64 /
   (MILLISECONDS_PER_DAY as f64) - 0.5 + J1970 as f64
@@ -116,6 +122,16 @@ fn ecliptic_longitude(m:f64) -> f64 {
   m + equation_of_center(m) + PERIHELION_OF_EARTH + PI
 }
 
+fn sun_coords (d: f64) -> Coords {
+    let m   = solar_mean_anomaly(d);
+    let l   = ecliptic_longitude(m);
+
+    Coords {
+        right_ascension: right_ascension(l, 0.0),
+        declination: declination(l, 0.0),
+    }
+}
+
 /// Calculates the sun position for a given date and latitude/longitude.
 /// The angles are calculated as [radians](https://en.wikipedia.org/wiki/Radian).
 ///
@@ -137,16 +153,6 @@ pub fn pos(unixtime_in_ms: i64, lat: f64, lon: f64) -> Position {
   }
 }
 
-fn sun_coords (d: f64) -> Coords {
-    let m   = solar_mean_anomaly(d);
-    let l   = ecliptic_longitude(m);
-
-    Coords {
-        right_ascension: right_ascension(l, 0.0),
-        declination: declination(l, 0.0),
-    }
-}
-
 #[test]
 fn test_pos(){
   // 2013-03-05 UTC
@@ -156,20 +162,16 @@ fn test_pos(){
   assert_eq!(-0.7000406838781611, pos.altitude);
 }
 
+// Moon
+
+#[derive(Debug)]
+pub struct Moon {
+    pub fraction: f64,
+    pub phase: f64,
+    pub angle: f64,
+}
 
 // general moon calculations
-
-fn lunar_mean_anomaly(d: f64) -> f64 {
-    (134.963 + 13.064993 * d).to_radians()
-}
-
-fn lunar_ecliptic_longitude(d: f64) -> f64 {
-    (218.316 + 13.176396 * d).to_radians()
-}
-
-fn lunar_mean_distance(d: f64) -> f64 {
-    (93.272 + 13.229350 * d).to_radians()
-}
 
 fn astro_refraction(h: f64) -> f64 {
     let hh = if h < 0.0 {
@@ -181,10 +183,16 @@ fn astro_refraction(h: f64) -> f64 {
     0.0002967 / (hh + 0.00312536 / (hh + 0.08901179)).tan()
 }
 
-#[derive(Debug)]
-struct Coords {
-    pub right_ascension: f64,
-    pub declination: f64,
+fn lunar_mean_anomaly(d: f64) -> f64 {
+    (134.963 + 13.064993 * d).to_radians()
+}
+
+fn lunar_ecliptic_longitude(d: f64) -> f64 {
+    (218.316 + 13.176396 * d).to_radians()
+}
+
+fn lunar_mean_distance(d: f64) -> f64 {
+    (93.272 + 13.229350 * d).to_radians()
 }
 
 fn moon_coords(d: f64) -> Coords {
@@ -201,6 +209,7 @@ fn moon_coords(d: f64) -> Coords {
     }
 }
 
+/// calculates the moon position for a given date and latitude/longitude
 pub fn moon_pos(unixtime_in_ms: i64, lat: f64, lon: f64) -> Position {
     let lw = TO_RAD * -lon;
     let phi = TO_RAD * lat;
@@ -227,13 +236,7 @@ fn test_moon_pos() {
     assert_eq!(0.014551482243892251, pos.altitude);
 }
 
-#[derive(Debug)]
-pub struct Moon {
-    pub fraction: f64,
-    pub phase: f64,
-    pub angle: f64,
-}
-
+/// calculates the moon illumination, phase, and angle for a given date
 pub fn moon_illumination(unixtime_in_ms: i64) -> Moon {
     let d = to_days(unixtime_in_ms);
     let s = sun_coords(d);
