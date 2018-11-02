@@ -164,6 +164,7 @@ fn test_pos(){
 
 // Moon
 
+/// Holds illuminated _fraction_ of the moon, the _phase_, and the _angle_.
 #[derive(Debug)]
 pub struct Illumination {
     pub fraction: f64,
@@ -209,7 +210,7 @@ fn moon_coords(d: f64) -> Coords {
     }
 }
 
-/// calculates the moon position for a given date and latitude/longitude
+/// Calculates the moon position for a given date and latitude/longitude
 pub fn moon_pos(unixtime_in_ms: i64, lat: f64, lon: f64) -> Position {
     let lw = TO_RAD * -lon;
     let phi = TO_RAD * lat;
@@ -236,7 +237,7 @@ fn test_moon_pos() {
     assert_eq!(0.014551482243892251, pos.altitude);
 }
 
-/// calculates the moon illumination, phase, and angle for a given date
+/// Calculates the moon illumination, phase, and angle for a given date
 pub fn moon_illumination(unixtime_in_ms: i64) -> Illumination {
     let d = to_days(unixtime_in_ms);
     let s = sun_coords(d);
