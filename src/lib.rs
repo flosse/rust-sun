@@ -226,3 +226,49 @@ fn test_moon_pos() {
     assert_eq!(-0.9783999522438225, pos.azimuth - PI);
     assert_eq!(0.014551482243892251, pos.altitude);
 }
+
+#[derive(Debug)]
+pub struct Moon {
+    pub fraction: f64,
+    pub phase: f64,
+    pub angle: f64,
+}
+
+pub fn moon_illumination(unixtime_in_ms: i64) -> Moon {
+    let d = to_days(unixtime_in_ms);
+    let s = sun_coords(d);
+    let m = moon_coords(d);
+    let a = lunar_mean_anomaly(d);
+
+    let distance = 385001.0 - 20905.0 * a.cos();  // distance to the moon in km
+
+    let sdist = 149598000 as f64;
+
+    let phi = (s.declination.sin() * m.declination.sin() + s.declination.cos() * m.declination.cos() * (s.right_ascension - m.right_ascension).cos()).acos();
+
+    let inc = (sdist * phi.sin()).atan2(distance - sdist * phi.cos());
+    let angle = (s.declination.cos() * (s.right_ascension - m.right_ascension).sin()).atan2(s.declination.sin() * m.declination.cos() - s.declination.cos() * (m.declination).sin() * (s.right_ascension - m.right_ascension).cos());
+
+
+    let sign = if angle < 0.0 {
+        -1.0
+    } else {
+        1.0
+    };
+
+    Moon {
+        fraction: (1.0 + inc.cos()) / 2.0,
+        phase: 0.5 + 0.5 * inc * sign / PI,
+        angle: angle,
+    }
+}
+
+#[test]
+fn test_moon_illumination() {
+    let date = 1362441600000;
+    let moon_illum = moon_illumination(date);
+
+    assert_eq!(moon_illum.fraction, 0.4848068202456373);
+    assert_eq!(moon_illum.phase, 0.7548368838538762);
+    assert_eq!(moon_illum.angle, 1.6732942678578346);
+}
