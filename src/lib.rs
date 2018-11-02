@@ -165,7 +165,7 @@ fn test_pos(){
 // Moon
 
 #[derive(Debug)]
-pub struct Moon {
+pub struct Illumination {
     pub fraction: f64,
     pub phase: f64,
     pub angle: f64,
@@ -237,7 +237,7 @@ fn test_moon_pos() {
 }
 
 /// calculates the moon illumination, phase, and angle for a given date
-pub fn moon_illumination(unixtime_in_ms: i64) -> Moon {
+pub fn moon_illumination(unixtime_in_ms: i64) -> Illumination {
     let d = to_days(unixtime_in_ms);
     let s = sun_coords(d);
     let m = moon_coords(d);
@@ -259,7 +259,7 @@ pub fn moon_illumination(unixtime_in_ms: i64) -> Moon {
         1.0
     };
 
-    Moon {
+    Illumination {
         fraction: (1.0 + inc.cos()) / 2.0,
         phase: 0.5 + 0.5 * inc * sign / PI,
         angle: angle,
