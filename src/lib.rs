@@ -232,9 +232,10 @@ pub fn moon_pos(unixtime_in_ms: i64, lat: f64, lon: f64) -> Position {
 fn test_moon_pos() {
     let date = 1362441600000;
     let pos = moon_pos(date, 50.5, 30.5);
+    const EPSILON : f64 = 1.0e-15;
 
-    assert_eq!(-0.9783999522438225, pos.azimuth - PI);
-    assert_eq!(0.014551482243892251, pos.altitude);
+    assert!((-0.9783999522438226 - pos.azimuth + PI).abs() < EPSILON);
+    assert!((0.014551482243892251 - pos.altitude).abs() < EPSILON);
 }
 
 /// Calculates the moon illumination, phase, and angle for a given date
@@ -271,8 +272,9 @@ pub fn moon_illumination(unixtime_in_ms: i64) -> Illumination {
 fn test_moon_illumination() {
     let date = 1362441600000;
     let moon_illum = moon_illumination(date);
+    const EPSILON : f64 = 1.0e-15;
 
-    assert_eq!(moon_illum.fraction, 0.4848068202456373);
-    assert_eq!(moon_illum.phase, 0.7548368838538762);
-    assert_eq!(moon_illum.angle, 1.6732942678578346);
+    assert!((moon_illum.fraction - 0.4848068202456373).abs() < EPSILON);
+    assert!((moon_illum.phase - 0.7548368838538762).abs() < EPSILON);
+    assert!((moon_illum.angle - 1.6732942678578346).abs() < EPSILON);
 }
