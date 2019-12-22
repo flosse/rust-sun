@@ -45,20 +45,8 @@ fn to_julian(unixtime_in_ms: i64) -> f64 {
   (MILLISECONDS_PER_DAY as f64) - 0.5 + J1970 as f64
 }
 
-#[test]
-fn test_to_julian(){
-  // 1. Jan. 2015
-  assert_eq!(2457054.5, to_julian(1422748800000));
-}
-
 fn to_days(unixtime_in_ms: i64) -> f64 {
   to_julian(unixtime_in_ms) - J2000 as f64
-}
-
-#[test]
-fn test_to_days(){
-  // 1. Jan. 2015
-  assert_eq!(5509.5, to_days(1422748800000));
 }
 
 // general calculations for position
@@ -140,11 +128,29 @@ pub fn pos(unixtime_in_ms: i64, lat: f64, lon: f64) -> Position {
   }
 }
 
-#[test]
-fn test_pos(){
-  // 2013-03-05 UTC
-  let date = 1362441600000;
-  let pos = pos(date, 50.5, 30.5);
-  assert_eq!(0.6412750628729547, pos.azimuth);
-  assert_eq!(-0.7000406838781611, pos.altitude);
+#[cfg(test)]
+mod tests {
+
+    use super::*;
+
+    #[test]
+    fn test_pos() {
+        // 2013-03-05 UTC
+        let date = 1362441600000;
+        let pos = pos(date, 50.5, 30.5);
+        assert_eq!(0.6412750628729547, pos.azimuth);
+        assert_eq!(-0.7000406838781611, pos.altitude);
+    }
+
+    #[test]
+    fn test_to_julian() {
+        // 1. Jan. 2015
+        assert_eq!(2457054.5, to_julian(1422748800000));
+    }
+
+    #[test]
+    fn test_to_days() {
+        // 1. Jan. 2015
+        assert_eq!(5509.5, to_days(1422748800000));
+    }
 }
