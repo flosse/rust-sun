@@ -16,8 +16,6 @@ Add the following to your `Cargo.toml`
 ## Usage
 
 ```rust
-extern crate sun;
-
 pub fn main() {
   let unixtime = 1362441600000;
   let lat = 48.0;
