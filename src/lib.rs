@@ -1,5 +1,3 @@
-// Copyright (c) 2015 - 2016 Markus Kohlhase <mail@markus-kohlhase.de>
-
 //! The `sun` crate is a library for calculating the position of the sun.
 //! It is a port of the `JavaScript` library
 //! [suncalc](https://github.com/mourner/suncalc).
