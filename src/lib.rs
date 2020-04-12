@@ -28,7 +28,7 @@ const PERIHELION_OF_EARTH: f64 = 102.9372 * TO_RAD;
 /// Holds the [azimuth](https://en.wikipedia.org/wiki/Azimuth)
 /// and [altitude](https://en.wikipedia.org/wiki/Horizontal_coordinate_system)
 /// angles of the sun position.
-#[derive(Debug, Clone)]
+#[derive(Debug, Clone, Copy)]
 pub struct Position {
     pub azimuth: f64,
     pub altitude: f64,
