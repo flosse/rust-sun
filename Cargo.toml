@@ -11,5 +11,4 @@ keywords = ["sun", "position"]
 edition = "2018"
 
 [badges]
-travis-ci = { repository = "flosse/rust-sun", branch = "master" }
 appveyor = { repository = "flosse/rust-sun", branch = "master" }

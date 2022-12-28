@@ -3,7 +3,6 @@
 A rust port of the JS library [suncalc](https://github.com/mourner/suncalc/).
 
 [![](http://meritbadge.herokuapp.com/sun)](https://crates.io/crates/sun)
-[![Build Status](https://travis-ci.org/flosse/rust-sun.svg?branch=master)](https://travis-ci.org/flosse/rust-sun)
 [![Build status](https://ci.appveyor.com/api/projects/status/0hixb523vvyf20y6?svg=true)](https://ci.appveyor.com/project/flosse/rust-sun)
 
 ## Install
