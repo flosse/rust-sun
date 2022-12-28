@@ -1,3 +1,4 @@
+#![no_std]
 //! The `sun` crate is a library for calculating the position of the sun.
 //! It is a port of the `JavaScript` library
 //! [suncalc](https://github.com/mourner/suncalc).
@@ -14,7 +15,9 @@
 //! println!("The position of the sun is {}/{}", az, alt);
 //! ```
 
-use std::f64::consts::PI;
+use core::f64::consts::PI;
+#[allow(unused_imports)]
+use num_traits::real::Real;
 
 // date/time constants and conversions
 
