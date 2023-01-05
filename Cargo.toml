@@ -14,5 +14,8 @@ edition = "2018"
 travis-ci = { repository = "flosse/rust-sun", branch = "master" }
 appveyor = { repository = "flosse/rust-sun", branch = "master" }
 
+[features]
+no-std = ["num-traits"]
+
 [dependencies]
-num-traits = { version = "0.2", default-features = false, features = ["libm"] }
+num-traits = { version = "0.2", default-features = false, features = ["libm"], optional = true }

@@ -1,4 +1,4 @@
-#![no_std]
+#![cfg_attr(feature = "no-std", no_std)]
 //! The `sun` crate is a library for calculating the position of the sun.
 //! It is a port of the `JavaScript` library
 //! [suncalc](https://github.com/mourner/suncalc).
@@ -15,9 +15,15 @@
 //! println!("The position of the sun is {}/{}", az, alt);
 //! ```
 
+#[cfg(feature = "no-std")]
 use core::f64::consts::PI;
+
+#[cfg(feature = "no-std")]
 #[allow(unused_imports)]
 use num_traits::real::Real;
+
+#[cfg(not(feature = "no-std"))]
+use std::f64::consts::PI;
 
 // date/time constants and conversions
 
