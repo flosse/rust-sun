@@ -17,7 +17,6 @@
 
 #[cfg(feature = "no-std")]
 use core::f64::consts::PI;
-
 #[cfg(feature = "no-std")]
 #[allow(unused_imports)]
 use num_traits::real::Real;
