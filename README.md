@@ -23,5 +23,8 @@ pub fn main() {
   let az  = pos.azimuth.to_degrees();
   let alt = pos.altitude.to_degrees();
   println!("The position of the sun is {}/{}", az, alt);
+
+  let time_ms = sun::time_at_phase(unixtime, sun::SunPhase::Sunrise, lat, lon, 0.0);
+  println!("Sunrise is at {}", time_ms);
 }
 ```
