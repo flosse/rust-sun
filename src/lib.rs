@@ -145,7 +145,7 @@ fn get_set_j(h: f64, lw: f64, phi: f64, dec: f64, n: f64, m: f64, l: f64) -> f64
 /// # Arguments
 ///
 /// * `date`      - [unix time](https://en.wikipedia.org/wiki/Unix_time) in milliseconds.
-/// * `sun_phase` - [`SunPhase] to calcuate time for
+/// * `sun_phase` - [`SunPhase`] to calcuate time for
 /// * `lat`       - [latitude](https://en.wikipedia.org/wiki/Latitude) in degrees.
 /// * `lon`       - [longitude](https://en.wikipedia.org/wiki/Longitude) in degrees.
 /// * `height`    - Observer height in meters above the horizon
@@ -207,6 +207,13 @@ pub enum SunPhase {
 }
 
 impl SunPhase {
+    /// Create a custom sun phase
+    ///
+    /// # Arguments
+    /// * `angle_deg` - Angle in degrees of the sun above the horizon. Use negative
+    ///                 numbers for angles below the horizon.
+    /// * `rise`      - `true` when this sun phase applies to the sun rising, `false`
+    ///                 if it's setting.
     pub fn custom(angle_deg: f64, rise: bool) -> Self {
         SunPhase::Custom(angle_deg, rise)
     }
