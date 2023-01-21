@@ -116,11 +116,11 @@ fn julian_cycle(d: f64, lw: f64) -> f64 {
 }
 
 fn approx_transit(ht: f64, lw: f64, n: f64) -> f64 {
-    return J0 + (ht + lw) / (2.0 * PI) + n;
+    J0 + (ht + lw) / (2.0 * PI) + n
 }
 
 fn solar_transit_j(ds: f64, m: f64, l: f64) -> f64 {
-    return J2000 as f64 + ds + 0.0053 * m.sin() - 0.0069 * (2.0 * l).sin();
+    J2000 as f64 + ds + 0.0053 * m.sin() - 0.0069 * (2.0 * l).sin()
 }
 
 fn hour_angle(h: f64, phi: f64, d: f64) -> f64 {
@@ -136,7 +136,7 @@ fn get_set_j(h: f64, lw: f64, phi: f64, dec: f64, n: f64, m: f64, l: f64) -> f64
     let w = hour_angle(h, phi, dec);
     let a = approx_transit(w, lw, n);
 
-    return solar_transit_j(a, m, l);
+    solar_transit_j(a, m, l)
 }
 
 /// Calculates the time for the given [`SunPhase`] at a given date, height and Latitude/Longitude.
