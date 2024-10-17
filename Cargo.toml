@@ -9,6 +9,3 @@ description = "Calculate the position of the sun."
 readme = "README.md"
 keywords = ["sun", "position"]
 edition = "2018"
-
-[badges]
-appveyor = { repository = "flosse/rust-sun", branch = "master" }
