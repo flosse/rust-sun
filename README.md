@@ -1,8 +1,9 @@
 # sun
 
-A rust port of the JS library [suncalc](https://github.com/mourner/suncalc/).
+A [Rust](https://www.rust-lang.org) port of the JS library [suncalc](https://github.com/mourner/suncalc/).
 
-[![](http://meritbadge.herokuapp.com/sun)](https://crates.io/crates/sun)
+[![Crates.io](https://img.shields.io/crates/v/sun.svg)](https://crates.io/crates/sun)
+[![Docs.rs](https://docs.rs/sun/badge.svg)](https://docs.rs/sun/)
 
 ## Install
 
