@@ -5,7 +5,7 @@
 //!
 //! # Example
 //!
-//! ```
+//! ```rust
 //! let unixtime = 1362441600000;
 //! let lat = 48.0;
 //! let lon = 9.0;
@@ -40,7 +40,7 @@ pub struct Position {
     pub altitude: f64,
 }
 
-fn to_julian(unixtime_in_ms: i64) -> f64 {
+const fn to_julian(unixtime_in_ms: i64) -> f64 {
     unixtime_in_ms as f64 / (MILLISECONDS_PER_DAY as f64) - 0.5 + J1970 as f64
 }
 
@@ -48,7 +48,7 @@ fn from_julian(j: f64) -> i64 {
     ((j + 0.5 - J1970 as f64) * MILLISECONDS_PER_DAY as f64).round() as i64
 }
 
-fn to_days(unixtime_in_ms: i64) -> f64 {
+const fn to_days(unixtime_in_ms: i64) -> f64 {
     to_julian(unixtime_in_ms) - J2000 as f64
 }
 
@@ -94,6 +94,7 @@ fn ecliptic_longitude(m: f64) -> f64 {
 /// * `unixtime`  - [unix time](https://en.wikipedia.org/wiki/Unix_time) in milliseconds.
 /// * `lat`       - [latitude](https://en.wikipedia.org/wiki/Latitude) in degrees.
 /// * `lon`       - [longitude](https://en.wikipedia.org/wiki/Longitude) in degrees.
+///
 /// calculates the sun position for a given date and latitude/longitude
 pub fn pos(unixtime_in_ms: i64, lat: f64, lon: f64) -> Position {
     let lw = -lon.to_radians();
@@ -115,7 +116,7 @@ fn julian_cycle(d: f64, lw: f64) -> f64 {
     (d - J0 - lw / (2.0 * PI)).round()
 }
 
-fn approx_transit(ht: f64, lw: f64, n: f64) -> f64 {
+const fn approx_transit(ht: f64, lw: f64, n: f64) -> f64 {
     J0 + (ht + lw) / (2.0 * PI) + n
 }
 
@@ -214,11 +215,11 @@ impl SunPhase {
     ///                 numbers for angles below the horizon.
     /// * `rise`      - `true` when this sun phase applies to the sun rising, `false`
     ///                 if it's setting.
-    pub fn custom(angle_deg: f64, rise: bool) -> Self {
+    pub const fn custom(angle_deg: f64, rise: bool) -> Self {
         SunPhase::Custom(angle_deg, rise)
     }
 
-    fn angle_deg(&self) -> f64 {
+    const fn angle_deg(&self) -> f64 {
         match self {
             SunPhase::Sunrise | SunPhase::Sunset => -0.833,
             SunPhase::SunriseEnd | SunPhase::SunsetStart => -0.5,
@@ -230,7 +231,7 @@ impl SunPhase {
         }
     }
 
-    fn is_rise(&self) -> bool {
+    const fn is_rise(&self) -> bool {
         match self {
             SunPhase::Sunrise
             | SunPhase::SunriseEnd
