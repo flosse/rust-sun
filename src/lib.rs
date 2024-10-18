@@ -44,6 +44,7 @@ const fn to_julian(unixtime_in_ms: f64) -> f64 {
     unixtime_in_ms / MILLISECONDS_PER_DAY - 0.5 + JULIAN_1970
 }
 
+#[allow(clippy::cast_possible_truncation)]
 fn from_julian(julian_date: f64) -> i64 {
     ((julian_date + 0.5 - JULIAN_1970) * MILLISECONDS_PER_DAY).round() as i64
 }
@@ -112,6 +113,7 @@ fn ecliptic_longitude(solar_mean_anomaly: f64) -> f64 {
 pub fn pos(unixtime_in_ms: i64, lat: f64, lon: f64) -> Position {
     let longitude_rad = -lon.to_radians();
     let latitude_rad = lat.to_radians();
+    #[allow(clippy::cast_precision_loss)]
     let days = to_days(unixtime_in_ms as f64);
     let mean = solar_mean_anomaly(days);
     let ecliptic_longitude = ecliptic_longitude(mean);
@@ -199,6 +201,7 @@ pub fn time_at_phase(
     let longitude_rad = -lon.to_radians();
     let latitude_rad = lat.to_radians();
     let observer_angle = observer_angle(height);
+    #[allow(clippy::cast_precision_loss)]
     let days = to_days(unixtime_in_ms as f64);
     let julian_cycle = julian_cycle(days, longitude_rad);
     let approx_transit = approx_transit(0.0, longitude_rad, julian_cycle);

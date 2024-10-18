@@ -1,6 +1,6 @@
 [package]
 name = "sun"
-version = "0.3.0"
+version = "0.3.1"
 authors = ["Markus Kohlhase <mail@markus-kohlhase.de>"]
 license = "MIT"
 homepage = "https://github.com/flosse/rust-sun"
@@ -10,3 +10,7 @@ readme = "README.md"
 keywords = ["sun", "position"]
 edition = "2021"
 rust-version = "1.82"
+
+[lints.clippy]
+pedantic = { level = "warn", priority = -1 }
+missing_const_for_fn = "warn"
