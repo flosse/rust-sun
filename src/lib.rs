@@ -6,7 +6,7 @@
 //! # Example
 //!
 //! ```rust
-//! let unixtime = 1_362_441_600_000;
+//! let unixtime = 1_362_441_600_000.0;
 //! let lat = 48.0;
 //! let lon = 9.0;
 //! let pos = sun::pos(unixtime,lat,lon);
@@ -16,7 +16,7 @@
 //!
 //! // calculate time of sunrise
 //! let time_ms = sun::time_at_phase(unixtime, sun::SunPhase::Sunrise, lat, lon, 0.0);
-//! assert_eq!(time_ms, 1_362_463_116_241);
+//! assert_eq!(time_ms, 1_362_463_116_241.0);
 //! ```
 
 use std::f64::consts::PI;
@@ -44,8 +44,8 @@ const fn to_julian(unixtime_in_ms: f64) -> f64 {
     unixtime_in_ms / MILLISECONDS_PER_DAY - 0.5 + JULIAN_1970
 }
 
-fn from_julian(julian_date: f64) -> i64 {
-    ((julian_date + 0.5 - JULIAN_1970) * MILLISECONDS_PER_DAY).round() as i64
+fn from_julian(julian_date: f64) -> f64 {
+    ((julian_date + 0.5 - JULIAN_1970) * MILLISECONDS_PER_DAY).round()
 }
 
 const fn to_days(unixtime_in_ms: f64) -> f64 {
@@ -109,10 +109,10 @@ fn ecliptic_longitude(solar_mean_anomaly: f64) -> f64 {
 ///
 /// calculates the sun position for a given date and latitude/longitude
 #[must_use]
-pub fn pos(unixtime_in_ms: i64, lat: f64, lon: f64) -> Position {
+pub fn pos(unixtime_in_ms: f64, lat: f64, lon: f64) -> Position {
     let longitude_rad = -lon.to_radians();
     let latitude_rad = lat.to_radians();
-    let days = to_days(unixtime_in_ms as f64);
+    let days = to_days(unixtime_in_ms);
     let mean = solar_mean_anomaly(days);
     let ecliptic_longitude = ecliptic_longitude(mean);
     let declination = declination(ecliptic_longitude, 0.0);
@@ -180,26 +180,26 @@ fn sunset_julian(
 ///
 /// ```rust
 /// // calculate time of sunrise
-/// let unixtime = 1_362_441_600_000;
+/// let unixtime = 1_362_441_600_000.0;
 /// let lat = 48.0;
 /// let lon = 9.0;
 /// let height = 0.0;
 /// let time_ms = sun::time_at_phase(unixtime, sun::SunPhase::Sunrise, lat, lon, height);
-/// assert_eq!(time_ms, 1_362_463_116_241);
+/// assert_eq!(time_ms, 1_362_463_116_241.0);
 /// ```
 
 #[must_use]
 pub fn time_at_phase(
-    unixtime_in_ms: i64,
+    unixtime_in_ms: f64,
     sun_phase: SunPhase,
     lat: f64,
     lon: f64,
     height: f64,
-) -> i64 {
+) -> f64 {
     let longitude_rad = -lon.to_radians();
     let latitude_rad = lat.to_radians();
     let observer_angle = observer_angle(height);
-    let days = to_days(unixtime_in_ms as f64);
+    let days = to_days(unixtime_in_ms);
     let julian_cycle = julian_cycle(days, longitude_rad);
     let approx_transit = approx_transit(0.0, longitude_rad, julian_cycle);
     let solar_mean_anomaly = solar_mean_anomaly(approx_transit);
@@ -296,7 +296,7 @@ mod tests {
     #[test]
     fn test_pos() {
         // 2013-03-05 UTC
-        let date = 1362441600000;
+        let date = 1362441600000.0;
         let pos = pos(date, 50.5, 30.5);
         assert_eq!(0.6412750628729547, pos.azimuth);
         assert_eq!(-0.7000406838781611, pos.altitude);
@@ -305,26 +305,26 @@ mod tests {
     #[test]
     fn test_time_at_angle() {
         // 2013-03-05 UTC
-        let date = 1362441600000;
+        let date = 1362441600000.0;
 
         assert_eq!(
             time_at_phase(date, SunPhase::Sunrise, 50.5, 30.5, 0.0),
-            1362458096440
+            1362458096440.0
         );
         assert_eq!(
             time_at_phase(date, SunPhase::Sunset, 50.5, 30.5, 0.0),
-            1362498417875
+            1362498417875.0
         );
 
         // equal to Dusk
         assert_eq!(
             time_at_phase(date, SunPhase::custom(-6.0, false), 50.5, 30.5, 0.0),
-            1362500376781
+            1362500376781.0
         );
         // equal to Dawn
         assert_eq!(
             time_at_phase(date, SunPhase::custom(-6.0, true), 50.5, 30.5, 0.0),
-            1362456137534
+            1362456137534.0
         );
     }
 
@@ -337,7 +337,7 @@ mod tests {
     #[test]
     fn test_from_julian() {
         // 1. Jan. 2015
-        assert_eq!(from_julian(2457054.5), 1422748800000);
+        assert_eq!(from_julian(2457054.5), 1422748800000.0);
     }
 
     #[test]
