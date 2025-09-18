@@ -8,8 +8,8 @@ repository = "https://github.com/flosse/rust-sun"
 description = "Calculate the position of the sun."
 readme = "README.md"
 keywords = ["sun", "position"]
-edition = "2021"
-rust-version = "1.82"
+edition = "2024"
+rust-version = "1.90"
 
 [lints.clippy]
 pedantic = { level = "warn", priority = -1 }

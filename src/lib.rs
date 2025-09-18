@@ -27,9 +27,8 @@ const MILLISECONDS_PER_DAY: f64 = 1_000.0 * 60.0 * 60.0 * 24.0;
 const JULIAN_0: f64 = 0.000_9;
 const JULIAN_1970: f64 = 2_440_588.0;
 const JULIAN_2000: f64 = 2_451_545.0;
-const TO_RAD: f64 = PI / 180.0;
-const OBLIQUITY_OF_EARTH: f64 = 23.439_7 * TO_RAD;
-const PERIHELION_OF_EARTH: f64 = 102.937_2 * TO_RAD;
+const OBLIQUITY_OF_EARTH: f64 = 23.439_7_f64.to_radians();
+const PERIHELION_OF_EARTH: f64 = 102.937_2_f64.to_radians();
 
 /// Holds the [azimuth](https://en.wikipedia.org/wiki/Azimuth)
 /// and [altitude](https://en.wikipedia.org/wiki/Horizontal_coordinate_system)
@@ -45,7 +44,7 @@ const fn to_julian(unixtime_in_ms: f64) -> f64 {
 }
 
 #[allow(clippy::cast_possible_truncation)]
-fn from_julian(julian_date: f64) -> i64 {
+const fn from_julian(julian_date: f64) -> i64 {
     ((julian_date + 0.5 - JULIAN_1970) * MILLISECONDS_PER_DAY).round() as i64
 }
 
@@ -80,13 +79,13 @@ fn altitude(sidereal_time: f64, latitude_rad: f64, declination: f64) -> f64 {
     .asin()
 }
 
-fn sidereal_time(days: f64, longitude_rad: f64) -> f64 {
+const fn sidereal_time(days: f64, longitude_rad: f64) -> f64 {
     (280.16 + 360.985_623_5 * days).to_radians() - longitude_rad
 }
 
 // general sun calculations
 
-fn solar_mean_anomaly(days: f64) -> f64 {
+const fn solar_mean_anomaly(days: f64) -> f64 {
     (357.529_1 + 0.985_600_28 * days).to_radians()
 }
 
@@ -125,7 +124,7 @@ pub fn pos(unixtime_in_ms: i64, lat: f64, lon: f64) -> Position {
     Position { azimuth, altitude }
 }
 
-fn julian_cycle(days: f64, longitude_rad: f64) -> f64 {
+const fn julian_cycle(days: f64, longitude_rad: f64) -> f64 {
     (days - JULIAN_0 - longitude_rad / (2.0 * PI)).round()
 }
 
@@ -189,7 +188,6 @@ fn sunset_julian(
 /// let time_ms = sun::time_at_phase(unixtime, sun::SunPhase::Sunrise, lat, lon, height);
 /// assert_eq!(time_ms, 1_362_463_116_241);
 /// ```
-
 #[must_use]
 pub fn time_at_phase(
     unixtime_in_ms: i64,
@@ -251,10 +249,12 @@ impl SunPhase {
     /// Create a custom sun phase
     ///
     /// # Arguments
-    /// * `angle_deg` - Angle in degrees of the sun above the horizon. Use negative
-    ///                 numbers for angles below the horizon.
-    /// * `rise`      - `true` when this sun phase applies to the sun rising, `false`
-    ///                 if it's setting.
+    /// - `angle_deg`:
+    ///   Angle in degrees of the sun above the horizon.
+    ///   Use negative numbers for angles below the horizon.
+    /// - `rise`:
+    ///   - `true` when this sun phase applies to the sun rising,
+    ///   - `false` if it's setting.
     #[must_use]
     pub const fn custom(angle_deg: f64, rise: bool) -> Self {
         SunPhase::Custom(angle_deg, rise)
@@ -299,53 +299,53 @@ mod tests {
     #[test]
     fn test_pos() {
         // 2013-03-05 UTC
-        let date = 1362441600000;
+        let date = 1_362_441_600_000;
         let pos = pos(date, 50.5, 30.5);
-        assert_eq!(0.6412750628729547, pos.azimuth);
-        assert_eq!(-0.7000406838781611, pos.altitude);
+        assert_eq!(0.641_275_062_872_954_7, pos.azimuth);
+        assert_eq!(-0.700_040_683_878_161_1, pos.altitude);
     }
 
     #[test]
     fn test_time_at_angle() {
         // 2013-03-05 UTC
-        let date = 1362441600000;
+        let date = 1_362_441_600_000;
 
         assert_eq!(
             time_at_phase(date, SunPhase::Sunrise, 50.5, 30.5, 0.0),
-            1362458096440
+            1_362_458_096_440
         );
         assert_eq!(
             time_at_phase(date, SunPhase::Sunset, 50.5, 30.5, 0.0),
-            1362498417875
+            1_362_498_417_875
         );
 
         // equal to Dusk
         assert_eq!(
             time_at_phase(date, SunPhase::custom(-6.0, false), 50.5, 30.5, 0.0),
-            1362500376781
+            1_362_500_376_781
         );
         // equal to Dawn
         assert_eq!(
             time_at_phase(date, SunPhase::custom(-6.0, true), 50.5, 30.5, 0.0),
-            1362456137534
+            1_362_456_137_534
         );
     }
 
     #[test]
     fn test_to_julian() {
         // 1. Jan. 2015
-        assert_eq!(2457054.5, to_julian(1422748800000.0));
+        assert_eq!(2_457_054.5, to_julian(1_422_748_800_000.0));
     }
 
     #[test]
     fn test_from_julian() {
         // 1. Jan. 2015
-        assert_eq!(from_julian(2457054.5), 1422748800000);
+        assert_eq!(from_julian(2_457_054.5), 1_422_748_800_000);
     }
 
     #[test]
     fn test_to_days() {
         // 1. Jan. 2015
-        assert_eq!(5509.5, to_days(1422748800000.0));
+        assert_eq!(5_509.5, to_days(1_422_748_800_000.0));
     }
 }
